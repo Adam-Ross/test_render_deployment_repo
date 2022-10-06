@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors')
 
 const {Pool} = require('pg')
 
@@ -9,22 +10,23 @@ dotenv.config()
 
 
 const app = express()
-
+app.use(cors())
 app.use(express.static('public'))
 
 const PORT = process.env.PORT || 5001
 
 
-const conString = process.env.CONNECTION_STRING
+const connectionString = 'postgres://todo_db_user:T1Q4GJ8qzSljxAcNt5OlHsk2hB9cPsua@dpg-ccuv072en0hrsnghqks0-a.oregon-postgres.render.com/todo_db_j35t?ssl=true'
 
 const pool = new Pool({
-    conString
+    connectionString,
 })
 
-app.get('/api/todos', async () => {
+app.get('/api/todos', async (req, res) => {
     try {
         const test = await pool.query('SELECT * FROM todos;')
-        console.log(test)
+        res.json(test.rows)
+        
     } catch (error) {
         console.error(error.message)
     }
