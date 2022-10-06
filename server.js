@@ -11,8 +11,10 @@ const app = express()
 const PORT = process.env.PORT || 5001
 
 
+const conString = process.env.CONNECTION_STRING
+
 const pool = new Pool({
-    CONNECTION_STRING,
+    conString,
 })
 
 app.get('/api/todos', async () => {
